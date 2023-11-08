@@ -2,6 +2,7 @@
 
 namespace FGTCLB\AcademicProjects\ViewHelpers\Form;
 
+use FGTCLB\AcademicProjects\Domain\Collection\CategoryCollection;
 use FGTCLB\AcademicProjects\Domain\Model\AcademicCategory;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
@@ -48,10 +49,10 @@ class FilterViewHelper extends AbstractFormFieldViewHelper
         $selectedCategories = $filter->getFilterCategories();
 
         if ($this->arguments['options'] instanceof \Traversable) {
-            /** @var AcademicCategory[] $categoriesOption */
-            $categoriesOption = $this->arguments['options'];
+            /** @var CategoryCollection<AcademicCategory> $categoryOptions */
+            $categoryOptions = $this->arguments['options'];
 
-            foreach ($categoriesOption as $category) {
+            foreach ($categoryOptions as $category) {
                 $value = $category->getUid();
                 $label = $category->getTitle();
 
@@ -69,9 +70,10 @@ class FilterViewHelper extends AbstractFormFieldViewHelper
                 $options .= $option . LF;
             }
 
-            if (count($categoriesOption) > 0) {
+            $categoryOptions->rewind();
+            if ($currentCategory = $categoryOptions->current()) {
                 $prepend .= '<option value="0">';
-                $prepend .= LocalizationUtility::translate('sys_category.type.' . $categoriesOption[0]->getType()->__toString(), 'academic_projects');
+                $prepend .= LocalizationUtility::translate('sys_category.type.' . $currentCategory->getType()->__toString(), 'academic_projects');
                 $prepend .= '</option>' . LF;
             }
         }
