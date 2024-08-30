@@ -8,6 +8,7 @@ use FGTCLB\AcademicProjects\Domain\Enumeration\Page;
 use FGTCLB\AcademicProjects\Domain\Enumeration\SortingOptions;
 use FGTCLB\AcademicProjects\Domain\Model\Dto\ProjectFilter;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -25,7 +26,14 @@ class ProjectRepository extends Repository
     ): QueryResult {
         $query = $this->createQuery();
 
+        /** @var ConstraintInterface[] $constraints */
         $constraints = [];
+
+        if ($selected && !empty($pages)) {
+            $query->getQuerySettings()->setRespectStoragePage(false);
+            $constraints[] = $query->in('uid', $pages);
+        }
+
         $constraints[] = $query->equals('doktype', Page::TYPE_ACEDEMIC_PROJECT);
 
         if ($filter) {
@@ -37,24 +45,19 @@ class ProjectRepository extends Repository
                 }
             }
         }
-        if ($selected && !empty($pages)) {
-            $constraints[] = $query->in('uid', $pages);
-        }
 
         if ($hideCompletedProjects) {
-            $constraints[] = $query->logicalOr(
+            $constraints[] = $query->logicalOr([
                 $query->greaterThanOrEqual('tx_academicprojects_end_date', new \DateTime()),
                 $query->equals('tx_academicprojects_end_date', 0)
-            );
+            ]);
         } else {
             $query->getQuerySettings()->setIgnoreEnableFields(true);
         }
 
-        if (!empty($constraints)) {
-            $query->matching(
-                $query->logicalAnd($constraints)
-            );
-        }
+        $query->matching(
+            $query->logicalAnd($constraints)
+        );
 
         [$sortingField, $sortingDirection] = explode(' ', SortingOptions::__default);
         if ($filter && $filter->getSorting()) {
