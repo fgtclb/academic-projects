@@ -35,13 +35,15 @@ class ProjectController extends ActionController
             $hideCompletedProjects = (bool)$this->settings['hide_completed_projects'];
         }
 
+        $cObject = $this->configurationManager->getContentObject();
+
         $projects = $this->projectRepository->findByFilter(
             $hideCompletedProjects,
             $filter,
-            $this->configurationManager->getContentObject()->data['pages'] !== ''
-                ? GeneralUtility::intExplode(',', $this->configurationManager->getContentObject()->data['pages'])
+            $cObject?->getData('pages') !== ''
+                ? GeneralUtility::intExplode(',', (string)$cObject?->getData('pages'))
                 : [],
-            $this->configurationManager->getContentObject()->data['list_type'] === 'academicprojects_projectlistsingle' ? true : false
+            $$cObject?->getData('list_type') === 'academicprojects_projectlistsingle' ? true : false
         );
 
         $categories = $this->categoryRepository->findAllApplicable($projects);
