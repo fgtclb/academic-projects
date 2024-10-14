@@ -1,5 +1,6 @@
 <?php
 
+use FGTCLB\AcademicProjects\Enumeration\PageTypes;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -13,7 +14,8 @@ if (!defined('TYPO3')) {
         return 'LLL:EXT:academic_projects/Resources/Private/Language/locallang_db.xlf:' . $langKey;
     };
 
-    // Create new academic item group for academic doktype items
+    // Create new item group for academic doktype items
+    // TODO: Harmonize this with all academic extensions
     ExtensionManagementUtility::addTcaSelectItemGroup(
         'pages',
         'doktype',
@@ -22,9 +24,10 @@ if (!defined('TYPO3')) {
         'after:default'
     );
 
-    $doktype = \FGTCLB\AcademicProjects\Domain\Enumeration\Page::TYPE_ACEDEMIC_PROJECT;
+    // Add and configure new doktype
 
-    // Add new doktype item
+    $doktype = PageTypes::TYPE_ACEDEMIC_PROJECT;
+
     ExtensionManagementUtility::addTcaSelectItem(
         'pages',
         'doktype',
@@ -79,9 +82,6 @@ if (!defined('TYPO3')) {
                 'rows' => 15,
                 'eval' => 'trim',
                 'default' => '',
-                'behaviour' => [
-                    'allowLanguageSynchronization' => true,
-                ],
             ],
         ],
         'tx_academicprojects_start_date' => [
@@ -92,6 +92,9 @@ if (!defined('TYPO3')) {
                 'renderType' => 'inputDateTime',
                 'eval' => 'date',
                 'size' => 7,
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
             ],
         ],
         'tx_academicprojects_end_date' => [
@@ -102,6 +105,9 @@ if (!defined('TYPO3')) {
                 'renderType' => 'inputDateTime',
                 'eval' => 'date',
                 'size' => 7,
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
             ],
         ],
         'tx_academicprojects_budget' => [
@@ -176,4 +182,5 @@ if (!defined('TYPO3')) {
     }
 
     $GLOBALS['TCA']['pages']['types'][$doktype]['columnsOverrides']['title']['config']['max'] = 60;
+    //$GLOBALS['TCA']['pages']['types'][$doktype]['columnsOverrides']['categories']['l10n_mode'] = 'exclude';
 })();
