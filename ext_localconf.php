@@ -25,25 +25,23 @@ use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
         )
     );
 
-    ExtensionUtility::configurePlugin(
-        'AcademicProjects',
-        'ProjectList',
-        [
-            ProjectController::class => 'list',
-        ],
-        [
-            ProjectController::class => 'list',
-        ]
-    );
+    $plugins = [
+        'ProjectList' => 'list',
+        'ProjectListSingle' => 'list',
+    ];
 
-    ExtensionUtility::configurePlugin(
-        'AcademicProjects',
-        'ProjectListSingle',
-        [
-            ProjectController::class => 'list',
-        ],
-        [
-            ProjectController::class => 'list',
-        ]
-    );
+    // TODO: Add caching to non filtered lists
+    foreach ($plugins as $pluginName => $action) {
+        ExtensionUtility::configurePlugin(
+            'AcademicProjects',
+            $pluginName,
+            [
+                ProjectController::class => $action,
+            ],
+            [
+                ProjectController::class => $action,
+            ],
+            ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+        );
+    }
 })();
