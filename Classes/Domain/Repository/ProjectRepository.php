@@ -45,14 +45,20 @@ class ProjectRepository extends Repository
         }
 
         if ($demand->getHideCompletedProjects() === true) {
-            $constraints[] = $query->logicalOr([
-                $query->equals('txAcademicprojectsEndDate', 0),
-                $query->greaterThan('txAcademicprojectsEndDate', new DateTime()),
-            ]);
+            $constraints[] = $query->logicalOr(
+                ...array_values(
+                    [
+                        $query->equals('txAcademicprojectsEndDate', 0),
+                        $query->greaterThan('txAcademicprojectsEndDate', new DateTime()),
+                    ]
+                )
+            );
         }
 
+        // The method signature of logicalAnd and logicalOr has changed in TYPO3 v12
+        // @see https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.0/Breaking-96044-HardenMethodSignatureOfLogicalAndAndLogicalOr.html
         $query->matching(
-            $query->logicalAnd($constraints)
+            $query->logicalAnd(...array_values($constraints))
         );
 
         $query->setOrderings(
