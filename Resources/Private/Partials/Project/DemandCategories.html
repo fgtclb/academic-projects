@@ -1,6 +1,6 @@
 <html
     lang="en"
-    xmlns:f="https://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
     xmlns:fap="http://typo3.org/ns/FGTCLB/AcademicProjects/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
@@ -11,7 +11,7 @@
                 extensionName: 'academic_projects'
             )}
         </label>
-        <fap:form.demandSelect
+        <fap:form.filterSelect
             id="competenceField"
             property="demandCategories.competenceField"
             value="{demand.demandCollection.demandCategories.competenceField}"
@@ -29,7 +29,7 @@
                 extensionName: 'academic_projects'
             )}
         </label>
-        <fap:form.demandSelect
+        <fap:form.filterSelect
             id="cooperation"
             property="demandCategories.cooperation"
             value="{demand.demandCollection.demandCategories.cooperation}"
@@ -47,7 +47,7 @@
                 extensionName: 'academic_projects'
             )}
         </label>
-        <fap:form.demandSelect
+        <fap:form.filterSelect
             id="fundingPartner"
             property="demandCategories.fundingPartner"
             value="{demand.demandCollection.demandCategories.fundingPartner}"
@@ -65,7 +65,7 @@
                 extensionName: 'academic_projects'
             )}
         </label>
-        <fap:form.demandSelect
+        <fap:form.filterSelect
             id="department"
             property="demandCategories.department"
             value="{demand.demandCollection.demandCategories.department}"
