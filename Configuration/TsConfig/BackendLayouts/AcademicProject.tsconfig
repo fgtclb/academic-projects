@@ -3,7 +3,7 @@ mod {
     BackendLayouts {
       AcademicProject {
         title = LLL:EXT:academic_projects/Resources/Private/Language/locallang_be.xlf:backend_layout.academic_project
-        icon = EXT:academic_projects/Resources/Public/Icons/BackendLayouts/AcademicProject.svg
+        icon = EXT:academic_projects/Resources/Public/Icons/BackendLayout.png
         config {
           backend_layout {
             colCount = 1
