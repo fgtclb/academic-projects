@@ -1,6 +1,9 @@
 [traverse(page, "doktype") == 30]
   page {
     10 {
+      paths {
+        1 = EXT:academic_projects/Resources/Private/
+      }
       dataProcessing {
         300 = FGTCLB\AcademicProjects\DataProcessing\ProjectProcessor
         310 = TYPO3\CMS\Frontend\DataProcessing\FilesProcessor
