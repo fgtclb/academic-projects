@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FGTCLB\AcademicProjects\Controller;
 
-use FGTCLB\AcademicProjects\Domain\Repository\CategoryRepository;
 use FGTCLB\AcademicProjects\Domain\Repository\ProjectRepository;
 use FGTCLB\AcademicProjects\Factory\DemandFactory;
+use FGTCLB\CategoryTypes\Domain\Repository\CategoryRepository;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -49,7 +49,7 @@ class ProjectController extends ActionController
         );
 
         $projects = $this->projectRepository->findByDemand($demandObject);
-        $categories = $this->categoryRepository->findAllApplicable($projects);
+        $categories = $this->categoryRepository->findAllApplicable('projects', $projects);
 
         $assignedValues = [
             'projects' => $projects,
