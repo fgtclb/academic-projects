@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FGTCLB\AcademicProjects\DataProcessing;
 
 use FGTCLB\AcademicProjects\Factory\ProjectFactory;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
@@ -27,8 +30,17 @@ class ProjectProcessor implements DataProcessorInterface
         array $processorConfiguration,
         array $processedData
     ) {
+        $versionInformation = GeneralUtility::makeInstance(Typo3Version::class);
         $projectFactory = GeneralUtility::makeInstance(ProjectFactory::class);
-        $processedData['project'] = $projectFactory->get($processedData['data']);
+
+        // TODO: Check which version exactly changed this...
+        if (version_compare($versionInformation->getVersion(), '12.0.0', '>=')) {
+            $pageData = $processedData['page']->getPageRecord();
+        } else {
+            $pageData = $processedData['data'];
+        }
+
+        $processedData['project'] = $projectFactory->get($pageData);
         return $processedData;
     }
 }
