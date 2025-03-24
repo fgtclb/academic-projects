@@ -1,7 +1,7 @@
 mod.wizards {
     newContentElement.wizardItems.academic {
-        before = special
         header = LLL:EXT:academic_projects/Resources/Private/Language/locallang_db.xlf:wizard_items.academic
+        after = special
         elements {
             academicprojects_projectlist {
                 iconIdentifier = actions-code-merge
